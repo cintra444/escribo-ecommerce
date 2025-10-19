@@ -48,14 +48,14 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
-// Middleware opcional para admin (se você tiver roles)
 const requireAdmin = async (req, res, next) => {
   try {
-    // Verifica se é admin baseado no app_metadata
-    const isAdmin = req.user?.app_metadata?.role === "admin";
+    const userRole = req.user?.app_metadata?.role;
+    const isAdmin = userRole === "admin";
 
     if (!isAdmin) {
       return res.status(403).json({
+        sucess: false,
         error: "Acesso negado",
         message: "Esta operação requer privilégios de administrador",
       });
@@ -65,6 +65,7 @@ const requireAdmin = async (req, res, next) => {
   } catch (error) {
     console.error("Erro ao verificar permissões:", error);
     return res.status(500).json({
+      sucess: false,
       error: "Erro ao verificar permissões",
     });
   }

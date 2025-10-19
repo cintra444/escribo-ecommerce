@@ -14,6 +14,8 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use("/api/admin", require("./routes/admin"));
+app.use("/api/admin", require("./routes/admin-produtos"));
 app.use("/api/produtos", require("./routes/produtos"));
 app.use("/api/pedidos", require("./routes/pedidos"));
 app.use("/api/clientes", require("./routes/clientes"));
