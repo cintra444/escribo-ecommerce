@@ -62,7 +62,7 @@ router.put("/perfil", async (req, res) => {
 
     // Preparar dados para atualização
     const updates = {};
-    if (nome_completo) updates.nome_completo = nome;
+    if (nome_completo) updates.nome_completo = nome_completo;
     if (telefone) updates.telefone = telefone;
     if (endereco) updates.endereco = endereco;
     updates.updated_at = new Date().toISOString();
@@ -72,7 +72,7 @@ router.put("/perfil", async (req, res) => {
       .from("clientes")
       .update(updates)
       .eq("user_id", user_id)
-      .select("id, nome, email, telefone, endereco, updated_at")
+      .select("id, nome_completo, email, telefone, endereco, updated_at")
       .single();
 
     if (error) {

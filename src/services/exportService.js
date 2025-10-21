@@ -54,14 +54,14 @@ class ExportService {
 
       // Gerar CSV
       let csv = `Pedido #${pedido.numero_pedido}\n`;
-      csv += `Cliente,${pedido.clientes.nome}\n`;
+      csv += `Cliente,${pedido.clientes.nome_completo}\n`;
       csv += `Email,${pedido.clientes.email}\n`;
       csv += `Telefone,${pedido.clientes.telefone || "N/A"}\n`;
       csv += `Data,${new Date(pedido.criado_em).toLocaleDateString("pt-BR")}\n`;
       csv += `Status,${pedido.status}\n`;
       csv += `Total,R$ ${pedido.valor_total}\n`;
-      csv += `Método de Pagamento,${pedido.metodo_pagamento}\n`;
-      csv += `Status Pagamento,${pedido.status_pagamento}\n\n`;
+      csv += `Método de Pagamento,${pedido.metodo_pgto}\n`;
+      csv += `Status Pagamento,${pedido.status_pgto}\n\n`;
 
       // Endereço de entrega
       if (pedido.endereco_envio) {
@@ -154,14 +154,14 @@ class ExportService {
 
       pedidos.forEach((pedido) => {
         const totalItens = pedido.itens_pedido.reduce(
-          (sum, item) => sum + item.quantidade,
+          (sum, item) => sum + item.qtde,
           0
         );
-        csv += `"${pedido.numero_pedido}","${pedido.clientes.nome}","${new Date(
-          pedido.criado_em
-        ).toLocaleDateString("pt-BR")}","${pedido.status}","R$ ${
-          pedido.valor_total
-        }",${totalItens}\n`;
+        csv += `"${pedido.numero_pedido}","${
+          pedido.clientes.nome_completo
+        }","${new Date(pedido.criado_em).toLocaleDateString("pt-BR")}","${
+          pedido.status
+        }","R$ ${pedido.valor_total}",${totalItens}\n`;
       });
 
       // Resumo

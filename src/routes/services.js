@@ -24,13 +24,11 @@ router.post("/enviar_confirmacao_pedido", async (req, res) => {
       data: result,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Erro ao enviar e-mail.",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Erro ao enviar e-mail.",
+      error: error.message,
+    });
   }
 });
 
@@ -45,7 +43,7 @@ router.get("/exportar-pedido/:pedido_id", async (req, res) => {
         error: "ID do pedido é obrigatório",
       });
     }
-    const cvsData = await exportService.exportPedidosToCSV(pedido_id);
+    const cvsData = await exportService.exportOrderToCSV(pedido_id);
 
     res.setHeader("Content-Type", "text/csv");
     res.setHeader(

@@ -127,12 +127,12 @@ class EmailService {
     const itens = pedido.itens_pedido
       .map(
         (item) =>
-          `- ${item.produtos.nome}: ${item.quantidade} x R$ ${item.preco_unitario} = R$ ${item.subtotal}`
+          `- ${item.produtos.nome_produto}: ${item.qtde} x R$ ${item.preco_unitario} = R$ ${item.subtotal}`
       )
       .join("\n");
 
     return `
-      Olá ${pedido.clientes.nome}!
+      Olá ${pedido.clientes.nome_completo}!
 
       Seu pedido #${pedido.numero_pedido} foi confirmado!
 

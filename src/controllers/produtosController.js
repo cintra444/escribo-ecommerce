@@ -100,10 +100,10 @@ class ProdutosController {
       const { limit = 8 } = req.query;
 
       const { data: produtos, error } = await supabase
-        .from("products")
+        .from("produtos")
         .select("*")
         .eq("is_active", true)
-        .gt("stock_quantity", 0) // Apenas produtos com estoque
+        .gt("qtde_estoque", 0) // Apenas produtos com estoque
         .order("created_at", { ascending: false })
         .limit(parseInt(limit));
 

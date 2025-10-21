@@ -40,7 +40,7 @@ class PedidosController {
       for (const item of itens) {
         const { data: produto, error: produtoError } = await supabase
           .from("produtos")
-          .select("preco, quantidade_estoque")
+          .select("preco, qtde_estoque")
           .eq("id", item.produto_id)
           .single();
 
@@ -48,7 +48,7 @@ class PedidosController {
           throw new Error(`Produto ${item.produto_id} não encontrado`);
         }
 
-        if (produto.quantidade_estoque < item.quantidade) {
+        if (produto.qtde_estoque < item.qtde) {
           throw new Error(
             `Estoque insuficiente para o produto ${item.produto_id}`
           );
@@ -56,7 +56,7 @@ class PedidosController {
 
         // Usar preço atual do produto para evitar inconsistências
         item.preco_unitario = produto.preco;
-        valor_total += produto.preco * item.quantidade;
+        valor_total += produto.preco * item.qtde;
       }
       //gerar numero do pedido
       const numero_pedido = `PED-${Date.now()}-${Math.random()
@@ -74,7 +74,7 @@ class PedidosController {
           metodo_pgto,
           valor_total,
           status: "pendente",
-          status_pagamento: "pendente",
+          status_pgto: "pendente",
         })
         .select()
         .single();
@@ -85,9 +85,9 @@ class PedidosController {
       const itensPedidos = itens.map((item) => ({
         pedido_id: pedido.id,
         produto_id: item.produto_id,
-        quantidade: item.quantidade,
+        qtde: item.qtde,
         preco_unitario: item.preco_unitario,
-        subtotal: item.quantidade * item.preco_unitario,
+        subtotal: item.qtde * item.preco_unitario,
       }));
 
       const { error: itensError } = await supabase
@@ -242,12 +242,12 @@ class PedidosController {
         .select(
           `
           *,
-          clientes(nome, email, telefone),
+          clientes(nome_completo, email, telefone),
           itens_pedido(
-            quantidade,
+            qtde,
             preco_unitario,
             subtotal,
-            produtos(nomeproduto)
+            produtos(nome_produto)
           )
         `
         )
